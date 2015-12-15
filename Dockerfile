@@ -1,8 +1,11 @@
 FROM docker.io/alpine:latest
 
 Run \
-apk add --update transmission-daemon \
-mkdir -p /transmission/{download,incomplete,torrent,config} && \
+apk add --update transmission-daemon && \
+mkdir -p /transmission/download && \
+mkdir -p /transmission/watch && \
+mkdir -p /transmission/incomplete && \
+mkdir -p /transmission/config && \
 chmod 1777 /transmission
 
 ENV TRANSMISSION_HOME /transmission/config
