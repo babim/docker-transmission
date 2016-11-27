@@ -1,6 +1,6 @@
 FROM babim/alpinebase
 
-Run apk add --no-cache transmission-daemon && \
+RUN apk add --no-cache transmission-daemon && \
     mkdir -p /data/download && \
     mkdir -p /data/watch && \
     mkdir -p /data/incomplete && \
