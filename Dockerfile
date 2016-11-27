@@ -13,7 +13,7 @@ RUN chmod +x /entrypoint.sh
 
 #expose port
 EXPOSE 9091
-VOLUME ["/data", ""]
+VOLUME ["/data"]
 #run service
 ENTRYPOINT ["/entrypoint.sh"]
 
