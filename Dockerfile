@@ -1,20 +1,21 @@
-FROM docker.io/alpine:latest
+FROM babim/alpinebase
 
-Run \
-apk add --update transmission-daemon && \
-mkdir -p /transmission/download && \
-mkdir -p /transmission/watch && \
-mkdir -p /transmission/incomplete && \
-mkdir -p /transmission/config && \
-chmod 1777 /transmission
+Run apk add --no-cache transmission-daemon && \
+    mkdir -p /data/download && \
+    mkdir -p /data/watch && \
+    mkdir -p /data/incomplete && \
+    mkdir -p /data/config && \
+    chmod 1777 /data
 
-ENV TRANSMISSION_HOME /transmission/config
+ENV TRANSMISSION_HOME /data/config
+ADD entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 #expose port
 EXPOSE 9091
-
+VOLUME ["/data", ""]
 #run service
-ENTRYPOINT ["/usr/bin/transmission-daemon"]
+ENTRYPOINT ["/entrypoint.sh"]
 
 #allow only local access
-CMD [ "--allowed", "127.0.0.1,192.168.1.*,172.17.0.*", "--watch-dir", "/transmission/watch", "--encryption-preferred", "--foreground", "--config-dir", "/transmission/config", "--incomplete-dir", "/transmission/incomplete", "--dht", "--no-auth", "--download-dir", "/transmission/download"]
+CMD [ "/usr/bin/transmission-daemon", "--allowed", "127.0.0.1,192.168.*.*,172.*.*.*,10.*.*.*", "--watch-dir", "/data/watch", "--encryption-preferred", "--foreground", "--config-dir", "/data/config", "--incomplete-dir", "/data/incomplete", "--dht", "--no-auth", "--download-dir", "/data/download"]
